@@ -1,1 +1,1 @@
-# restraunt-digital-assistant
+# Restaurant-Digital-Assistant
