@@ -8,15 +8,31 @@ scenarios = ["Bring some food", "Clear the table", "Bring some water", "Can you 
 
 food_items = {'burger':{'Cheese','Chicken'}, 'pizza':{'margharita', 'farm house'}, 'pasta':{'red-sauce', 'white-sauce'}, 'Chinese':{'noodles','momos'}}
 
+chef_special = ['Chilly Rooster Burger', 'Red Wine Pasta']
+
 espeak = "espeak '"
+
+def responseToFoodItems():
+    choice = input()
+    if choice in food_items:
+         print(choice, food_items[choice])
+    else:
+        os.system(espeak + "'Sorry, we don't have it. You can try" + )
 
 def responseToQueries(s):
     if(s==0):
         osCommand = espeak + "What would you prefer to have?'"
     elif(s==1):
         osCommand = espeak + "Sending someone at your service, till then you can have a look at our menu'"
+    elif(s==4):
+        osCommand = "espeak -g 50 '"
+        for food in food_items:
+            osCommand += food + " ,"
+        osCommand+="'"
+        os.system(osCommand)
+        responseToFoodItems()
     else:
-        osCommand = espeak + "'"
+        osCommand = espeak + "Sorry, I could not understand!'"
     os.system(osCommand)
 
 def getWordFromMic():
@@ -74,16 +90,17 @@ def askForService():
         i = i + 1
 
     print (similarity)
-    if max<0.5:
+    if max<0.7:
         print("Sorry, I couldn't understand!")
+        query_index = -1
 
     responseToQueries(query_index)
 
 if __name__ == "__main__":
-    os.system(espeak + "Welcome to our restaurant! Can I know who I am supposed to serve?'")
-    name = input("Name: ")
+    #os.system(espeak + "Welcome to our restaurant! Can I know who I am supposed to serve?'")
+    #name = input("Name: ")
 
-    os.system(espeak + "Greetings " + name + ". What would you like to have?'")
+    #os.system(espeak + "Greetings " + name + ". What would you like to have?'")
     askForService()
 
     #start()
