@@ -1,0 +1,3 @@
+{
+    "latest_weight": 9
+}

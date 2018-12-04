@@ -1,0 +1,109 @@
+{
+    "queries": [
+        {
+            "What is there in the menu": {
+                "annotation": "We have Pizza, Pasta, Chinese and burger food items in our menu.",
+                "type": "food_query",
+                "weight": 1
+            }
+        },
+        {
+            "What type of pizzas do you have?": {
+                "annotation": "We have margharita and farm house",
+                "type": "food_query",
+                "weight": 1
+            }
+        },
+        {
+            "What is there in chinese items?": {
+                "annotation": "We have noodles and momos in our Chinese menu.",
+                "type": "food_query",
+                "weight": 1
+            }
+        },
+        {
+            "What is the price/cost of Pizza?": {
+                "annotation": "Which type of pizza you would like to have?",
+                "type": "food_query",
+                "weight": 1
+            }
+        },
+        {
+            "What is the cost/price of margharita": {
+                "annotation": "Cost of margharita is ruppees 300/- only.",
+                "type": "food_query",
+                "weight": 1
+            }
+        },
+        {
+            "What is the cost/price of farm house": {
+                "annotation": "Cost of farm-house is ruppees 500/- only.",
+                "type": "food_query",
+                "weight": 1
+            }
+        },
+        {
+            "What is the size of this pizza?": {
+                "annotation": "We have medium sized pizza's only. Each having 6 slices.",
+                "type": "food_query",
+                "weight": 1
+            }
+        },
+        {
+            "what all do you have in your menu": {
+                "annotation": "We have Pizza, Pasta, Chinese and burger food items in our menu.",
+                "type": "food_query",
+                "weight": 2
+            }
+        },
+        {
+            "I want to have a pizza.": {
+                "annotation": "We have two types of pizza. margharita and farm house. which one you want?",
+                "type": "food_query",
+                "weight": 3
+            }
+        },
+        {
+            "Okay bring one margharita for me.": {
+                "annotation": "Ordered! You order is booked. Do you like to order anything else?",
+                "type": "food_query",
+                "weight": 4
+            }
+        },
+        {
+            "i love you": {
+                "annotation": "I love all my customers. Thanks for the love.",
+                "type": "general_query",
+                "weight": 5
+            }
+        },
+        {
+            "Tell me the types of pasta you have?": {
+                "annotation": "We have white sauce pasta and red sauce pasta for you.",
+                "type": "food_query",
+                "weight": 6
+            }
+        },
+        {
+            "What is the price for red sauce pasta?": {
+                "annotation": "Cost of red sauce pasta is ruppees 300 only.",
+                "type": "food_query",
+                "weight": 7
+            }
+        },
+        {
+            "what is the cost of white sauce pasta": {
+                "annotation": "Cost of white sauce pasta is ruppees 500 only.",
+                "type": "food_query",
+                "weight": 8
+            }
+        },
+        {
+            "What are other things you have apart from pasta?": {
+                "annotation": "we have pizza, chines food and burger items in our menu.",
+                "type": "food_query",
+                "weight": 9
+            }
+        }
+    ]
+}

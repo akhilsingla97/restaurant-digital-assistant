@@ -1,89 +1,107 @@
-###For a naive approach we build several use case scenarios and map the user query to the one most suitable and reply accordingly
-'''IMPORTS'''
 import os
 import spacy
-import speech_recognition as sr
-
-scenarios = ["Bring some food", "Clear the table", "Bring some water", "Can you tell me the main cuisines?", "Can I get the menu please?"]
-
-food_items = {'burger':{'Cheese','Chicken'}, 'pizza':{'margharita', 'farm house'}, 'pasta':{'red-sauce', 'white-sauce'}, 'Chinese':{'noodles','momos'}}
-
-espeak = "espeak '"
-
-def responseToQueries(s):
-    if(s==0):
-        osCommand = espeak + "What would you prefer to have?'"
-    elif(s==1):
-        osCommand = espeak + "Sending someone at your service, till then you can have a look at our menu'"
-    else:
-        osCommand = espeak + "'"
-    os.system(osCommand)
-
-def getWordFromMic():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        audio = r.listen(source)
-    try:
-        s = r.recognize_google(audio)
-        print(s)
-        return s
-    except sr.UnknownValueError:
-        print("Google Speech Recognition could not understand audio")
-    except sr.RequestError as e:
-        print("Could not request results from Google Speech Recognition service; {0}".format(e))
-
-
-def getWord():
-    s = "espeak '" + "Speak" + "'"
-    os.system(s)
-    In = getWordFromMic()
-    return In
-
-
-"""
-	Using espeak : eSpeak is a compact open source software speech
-	synthesizer for English and other languages, for Linux and Windows.
-"""
+import json
 
 
 def speak(s):
     s = "espeak '" + s + "'"
     os.system(s)
 
+last_weight = 0
 
-def start():
-    s = getWord()
-    speak(s)
+def debug(query, obj):
+    # last_weight += 1
+    global last_weight
+    ok = input("Want to add this query with new answer in db? ")
+    if ok is "y" or ok is "Y" or ok is "1":
+        print("------------------------------------------------------------")
+        solution = input("Write answer for this query: ")
+        typeofquery = input("Enter type of the query: food or general? ")
+        last_weight += 1
+        obj["queries"].append({
+            query : {
+                "annotation": solution ,
+                "type": typeofquery ,
+                "weight": last_weight 
+            } 
+        })
+        with open('database.json', 'w') as outfile:  
+            obj = json.dumps(obj, indent=4)
+            outfile.write(obj)
+        print('-------------------------------------------------------------')
+    else:
+        return
+
 
 def askForService():
-    print("Enter Query: ")  #in the actual system this will be the voice input
-    query = input()
+    while True:
+        query = input("Ask me anything: ")
+        if "bye" in query:
+            print("Thank you for visiting our restauarnt.. Have a good day.")
+            break
+        obj = {}
+        with open('database.json', 'r') as fp:
+            obj = json.load(fp)
+        queries = obj["queries"]
+        similarity = 0
+        query_detail = "none"
+        nlp = spacy.load('en_core_web_sm')
+        foundAMatch = 0
+        i=0
+        solution = []
+        for q in queries:
+            for x, y in q.items():
+                doc1 = nlp(query)
+                doc2 = nlp(x)
+                tmpSimilarity = doc1.similarity(doc2)
+                details = {}
+                if tmpSimilarity > similarity and tmpSimilarity > 0.5:
+                    similarity = tmpSimilarity
+                    details["answer"] = y["annotation"]
+                    details["weight"] = y["weight"]
+                    del solution[:]
+                    solution.append(details)
+                    foundAMatch = 1
+                elif tmpSimilarity == similarity and tmpSimilarity > 0.5:
+                    similarity = tmpSimilarity
+                    details["answer"] = y["annotation"]
+                    details["weight"] = y["weight"]
+                    solution.append(details)
+                    foundAMatch = 1
+                
 
-    similarity = []
-    max = 0.0
-    query_index = -1
-    i = 0
-    nlp = spacy.load('en_core_web_sm')
-    for scenario in scenarios:
-        doc1 = nlp(query)
-        doc2 = nlp(scenario)
-        similarity.append(doc1.similarity(doc2))
-        if similarity[i] > max :
-            max = similarity[i]
-            query_index = i
-        i = i + 1
+            i+=1
+        if foundAMatch is 0:
+            print("Sorry! I don't understand.")
+            debug(query, obj)
+        else:
+            wt = 0
+            finalAnswerToPrint = ""
+            for details in solution:
+                if wt < details["weight"]:
+                    wt = details["weight"]
+                    finalAnswerToPrint = details["answer"]
+            print(finalAnswerToPrint)
+            debug(query, obj)
 
-    print (similarity)
-    if max<0.5:
-        print("Sorry, I couldn't understand!")
+def fetchWeight():
+    global last_weight
+    with open("config.txt", 'r') as config:
+        obj = json.load(config)
+        last_weight = obj["latest_weight"]
+    return obj
 
-    responseToQueries(query_index)
+def updateLastWeight(obj):
+    with open('config.txt', 'w') as outfile:  
+            obj["latest_weight"] = last_weight
+            obj = json.dumps(obj, indent=4)
+            outfile.write(obj)
 
 if __name__ == "__main__":
-    os.system(espeak + "Welcome to our restaurant! Can I know who I am supposed to serve?'")
-    name = input("Name: ")
-
-    os.system(espeak + "Greetings " + name + ". What would you like to have?'")
+    # speak("Welcome to our restaurant! Can I know who I am supposed to serve?")
+    # name = input("Name: ")
+    # speak("Greetings " + name + ". What would you like to have?")
+    obj = fetchWeight()
     askForService()
-
-    #start()
+    updateLastWeight(obj)
+    

@@ -1,0 +1,65 @@
+{
+"menu":
+	[
+		{ 
+			"pizza": {
+				"types": [
+					{
+						"name": "margharita",
+						"price": "300"
+					}, 
+					{
+						"name": "farm house",
+						"price": "500"
+					}
+
+				]
+			}
+		},
+		{
+			"pasta": {
+				"types": [
+					{
+						"name": "red-sauce",
+						"price": "300"
+					}, 
+					{
+						"name": "white sauce",
+						"price": "500"
+					}
+
+				]
+			}
+		},
+		{
+			"chinese": {
+				"types": [
+					{
+						"name": "noodle",
+						"price": "300"
+					}, 
+					{
+						"name": "momos",
+						"price": "500"
+					}
+
+				]
+			}
+		},
+		{
+			"burger": {
+				"types": [
+					{
+						"name": "cheese",
+						"price": "300"
+					}, 
+					{
+						"name": "chicken",
+						"price": "500"
+					}
+
+				]
+			}
+		}
+	]
+}
