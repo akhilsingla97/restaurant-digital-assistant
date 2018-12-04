@@ -2,38 +2,43 @@
 '''IMPORTS'''
 import os
 import spacy
+import random
 import speech_recognition as sr
 
-scenarios = ["Bring some food", "Clear the table", "Bring some water", "Can you tell me the main cuisines?", "Can I get the menu please?"]
+scenarios = ["Bring some food", "Clear the table", "Bring some water", "Can you tell me the main cuisines?", "Get the menu please"]
 
 food_items = {'burger':{'Cheese','Chicken'}, 'pizza':{'margharita', 'farm house'}, 'pasta':{'red-sauce', 'white-sauce'}, 'Chinese':{'noodles','momos'}}
 
 chef_special = ['Chilly Rooster Burger', 'Red Wine Pasta']
 
+flite = "flite -voice slt '"
 espeak = "espeak '"
 
 def responseToFoodItems():
     choice = input()
     if choice in food_items:
-         print(choice, food_items[choice])
+        print(choice, food_items[choice])
     else:
-        os.system(espeak + "'Sorry, we don't have it. You can try" + )
+        os.system(espeak + "Sorry, we do not have it. You can try " + chef_special[random.randint(0,1)] + "'")
 
 def responseToQueries(s):
     if(s==0):
         osCommand = espeak + "What would you prefer to have?'"
+        os.system(osCommand)
     elif(s==1):
         osCommand = espeak + "Sending someone at your service, till then you can have a look at our menu'"
+        os.system(osCommand)
     elif(s==4):
-        osCommand = "espeak -g 50 '"
+        #osCommand = "espeak -g 50 '"
+        osCommand = espeak
         for food in food_items:
-            osCommand += food + " ,"
+            osCommand += food + " , "
         osCommand+="'"
         os.system(osCommand)
         responseToFoodItems()
     else:
         osCommand = espeak + "Sorry, I could not understand!'"
-    os.system(osCommand)
+        os.system(osCommand)
 
 def getWordFromMic():
     r = sr.Recognizer()
@@ -97,10 +102,10 @@ def askForService():
     responseToQueries(query_index)
 
 if __name__ == "__main__":
-    #os.system(espeak + "Welcome to our restaurant! Can I know who I am supposed to serve?'")
-    #name = input("Name: ")
+    os.system(espeak + "Welcome to our restaurant! Can I know who I am supposed to serve?'")
+    name = input("Name: ")
 
-    #os.system(espeak + "Greetings " + name + ". What would you like to have?'")
+    os.system(espeak + "Greetings " + name + ". What would you like to have?'")
     askForService()
 
     #start()
