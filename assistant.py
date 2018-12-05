@@ -12,7 +12,7 @@ from datetime import datetime
 import speech_recognition as sr
 
 #connection parameters
-ip = '192.168.43.14'
+ip = '172.31.65.128'
 usr = 'amrit'
 psw = '1541'
 remotePath = "/home/amrit/logs/convlog.txt"
